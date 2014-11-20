@@ -95,6 +95,8 @@ function Engel(){
 			gameObjects[i].draw();
 		}
 
+		var guiElement = new GUI_Texture([-0.5,0,0.5,0.75]);
+		guiElement.draw();
 	}
 
 

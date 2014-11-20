@@ -119,13 +119,17 @@ function Shader(meshUsed){
 	// draw - called by Mesh
 	this.draw = function(location){
 		//mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-		
+
+		gl.useProgram(this.getProgram());
+
+		this.setBuffers();		
+
 		gl.bindBuffer(gl.ARRAY_BUFFER, mesh.getVertexBuffer());
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, mesh.getIndexBuffer());
 
 		setMatrixUniforms(location);
 
-		gl.useProgram(program);
+
 
 		gl.drawElements(gl.TRIANGLES, mesh.getIndexBuffer().numItems, gl.UNSIGNED_SHORT,0);
 
