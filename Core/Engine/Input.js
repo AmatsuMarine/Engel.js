@@ -4,6 +4,8 @@ function Input(){
 		50
 	];
 
+	this.mousePosZoned = [0,0];
+
 	this.nextMouseButton = [
 		false,
 		false,
@@ -25,12 +27,16 @@ function Input(){
 	this.getMousePos = function(){
 		return this.mousePos;
 	}
+	
+	this.getMousePosZoned = function(){
+		return this.mousePosZoned;
+	}
 
 	this.update = function(){
 		resetMouseButtons();
 
 // display mouse X/Y pos, left mouse button, and deltaTime
-		debug.primary("<b>X:</b> " + this.mousePos[0] + " <b>Y:</b> " + this.mousePos[1] + " <b>Click:</b> " + Input.mouseButton[0] + " " + this.nextMouseButton[0] + " <b>Delta time:</b> " + engelEngine.deltaTime);
+		debug.primary("<b>X:</b> " + this.mousePosZoned[0] + " <b>Y:</b> " + this.mousePosZoned[1] + " <b>Click:</b> " + Input.mouseButton[0] + " " + this.nextMouseButton[0] + " <b>Delta time:</b> " + engelEngine.deltaTime);
 
 
 	}
@@ -42,8 +48,6 @@ function Input(){
 			canvas.width / 2,
 			canvas.height / 2
 		];
-
-		debug.log(this.mousePos);
 		
 		this.nextMouseButton = [
 			false,
@@ -81,6 +85,9 @@ Input.handleMouseMove = function(event){
 	if(input){
 		input.mousePos[0] = event.pageX - offsetX;
 		input.mousePos[1] = event.pageY - offsetY;
+
+		input.mousePosZoned[0] = (event.pageX - offsetX) / Engel.canvas.width * 2.0 - 1.0;
+		input.mousePosZoned[1] = ((event.pageY - offsetY) / Engel.canvas.height - 0.5) * -2.0;
 	}
 
 	// max values

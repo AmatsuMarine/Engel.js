@@ -1,31 +1,29 @@
 function GUI_Texture(rect) {
-	var position = rect;
+	var position;
 //	this.texture = image;
-	this.shader = new GUI_Shader(this);
+	this.shader = null;
 
 	// buffers
 	var vertexBuffer;
-	var uvBuffer;
 	var indexBuffer;
 
 	this.onMouseOver = function(){
 		// do something
-		debug.log("mouse hovering");
+		guis.add(new GUI_Texture([-0.1,0.1,0.2,0.2]));
 	}
 
-	this.draw = function(){
-		if(!this.shader)
-			this.shader = new GUI_Shader(this);
+	this.checkMouseOver = function(){
+		var mousePos = input.getMousePosZoned();
 
-		this.shader.draw();
+		return mousePos[0] >= position[0] && mousePos[0] <= position[0] + position[2] && mousePos[1] <= position[1] && mousePos[1] >= position[1] - position[3];
 	}
 
 	var createBuffers = function(){
 		var vertices = [
 			position[0], position[1],
 			position[0] + position[2], position[1],
-			position[0] + position[2], position[1] + position[3],
-			position[0], position[1] + position[3]
+			position[0] + position[2], position[1] - position[3],
+			position[0], position[1] - position[3]
 			];
 
 		var indices = [
@@ -38,7 +36,7 @@ function GUI_Texture(rect) {
 		gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 		vertexBuffer.itemSize = 2; // 2 for XY
-		vertexBuffer.numItems = 4; // number of vertices
+		vertexBuffer.numItems = vertices.length; // number of vertices
 
 		//indices buffer
 		indexBuffer = gl.createBuffer();
@@ -48,12 +46,16 @@ function GUI_Texture(rect) {
 		indexBuffer.numItems = indices.length;
 		
 		// shader
-		if(!shader){
+		if(this.shader == null){
 			debug.log("Mesh does not have shader");
-			shader = new GUI_Shader(this);
+			this.shader = new GUI_Shader(this);
 		}
 	}
 
+	// get shader
+	this.getShader = function(){
+		return this.shader;
+	}
 
 	// return buffers
 
@@ -67,15 +69,6 @@ function GUI_Texture(rect) {
 		return vertexBuffer;
 	}
 
-	this.getUVBuffer = function(){
-		if(!uvBuffer){
-			debug.log("GUI: null UV buffer");
-			createBuffers();
-		}
-		
-		return uvBuffer;
-	}
-
 	this.getIndexBuffer = function(){
 		if(!indexBuffer){
 			debug.log("GUI: null index buffer");
@@ -85,15 +78,33 @@ function GUI_Texture(rect) {
 		return indexBuffer;
 	}
 
-	var init = function(){
-		if(!this.shader)
-			this.shader = new GUI_Shader(this);
+	var init = function(pos){
+		this.shader = new GUI_Shader(this);
 		
-		if(!position)
+		if(!pos)
 			position = [0,0,1,1];
+		else
+			position = pos;
 
 		createBuffers();
 	}
 
-	init();
+	init(rect);
+
+
+	this.draw = function(){
+		createBuffers();		
+		if(this.shader == null){
+			this.shader = new GUI_Shader(this);
+			debug.log("GUI_Texture shader missing");
+		}
+
+		this.shader.draw();
+	}
+
+
+
+	
+
+	
 }

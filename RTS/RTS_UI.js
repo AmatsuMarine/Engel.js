@@ -15,6 +15,12 @@ function RTS_UI(){
 		resourceFrame.draw();
 	}
 
+	this.update = function(){
+		gui.add(minimapFrame);
+		gui.add(commandCardFrame);
+		gui.add(resourceFrame);
+	}
+
 	var init = function(){
 		minimapFrame = new GUI_Texture([-1.0,-0.25,0.65,0.75]);
 		commandCardFrame = new GUI_Texture([0.5,-0.35,1.5,0.65]);

@@ -1,16 +1,34 @@
 function GUI(canvas){
-	var _canvas = Engel.canvas;
+	var guis = [];
 
-	this.Text(text, x, y){
-		_canvas2D.font = '30px Arial';
-		_canvas2D.fillText(text,x,y);
+	var clear = function(){
+		guis = [];
+	}
+
+	this.draw = function(){
+		checkMouseOver();
+	
+		for(var i = 0; i < guis.length; i++){
+			guis[i].draw();
+		}
+
+		clear();
+	}
+
+	this.add = function(ui){
+		guis.push(ui);
+	}
+
+	var checkMouseOver = function(){
+		for(var i = 0; i < guis.length; i++){
+			if(guis[i].checkMouseOver()){
+				guis[i].onMouseOver();
+				//break;
+			}
+		}
 	}
 }
 
-GUI.prototype.Text(text, x, y, canvas2D){
-	canvas2D.font = '30px Arial';
-	canvas2D.fillText(text,x,y);
-}
 
 /*
 GUI.Text(text, x, y, style, font){

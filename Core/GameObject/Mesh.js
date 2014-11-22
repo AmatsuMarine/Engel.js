@@ -16,14 +16,23 @@ function Mesh(){
 	var indexBuffer;
 
 	// shader variable
-	this.shader;
+	//this.shader;
 	
 	// create shader
-	shader = new Shader(this);
+	var shader = new Shader(this);
 
 	this.draw = function(location){
 		this.createBuffers();
-		shader.setBuffers();
+		//shader.setBuffers();
+
+		if(!shader){
+			debug.log("null shader - mesh");
+			this.shader = new Shader(this);
+		}
+
+		if(!location)
+			debug.log("location not found - mesh.draw");
+
 		shader.draw(location);
 	}
 

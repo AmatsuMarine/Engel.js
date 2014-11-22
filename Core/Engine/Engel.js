@@ -2,6 +2,7 @@ var engelEngine;
 var input;
 var debug;
 var gl;
+var gui;
 
 // engine definition
 function Engel(){
@@ -9,13 +10,13 @@ function Engel(){
 	this.canvas; // canvas to draw on
 	debug = new Debug();
 	input = new Input();
+	gui = new GUI();
 
 	this.deltaTime = 0;
 	
 	// Cameras
 	this.camera;// = new Camera();
 	
-
 	// test GameObjects
 	var gameObjects = [];
 	
@@ -62,7 +63,7 @@ function Engel(){
 				this.getLocation().translate([-0.01,0,0]);
 		};
 		
-		
+		//this.ui = new RTS_UI();
 		
 	}
 
@@ -84,6 +85,16 @@ function Engel(){
 
 		//if(input)
 			input.update();
+
+		if(typeof Engel.UI === 'undefined' || Engel.UI == null)
+			Engel.UI = new RTS_UI();
+
+		try{
+			Engel.UI.update();
+		}
+		catch(e){
+			debug.log("null UI");
+		}
 	}
 
 	// draw objects to screen
@@ -95,8 +106,8 @@ function Engel(){
 			gameObjects[i].draw();
 		}
 
-		var guiElement = new GUI_Texture([-0.5,0,0.5,0.75]);
-		guiElement.draw();
+		gui.draw();
+
 	}
 
 
@@ -129,8 +140,11 @@ function Engel(){
 		// get the canvas from the page
 		this.canvas = document.getElementById('Engel-Canvas');
 		Engel.canvas = this.canvas;
+
+		// add listeners to the canvas
 		Engel.canvas.addEventListener("click", Input.handleMouseClick);
 		Engel.canvas.addEventListener("mousemove", Input.handleMouseMove);
+
 		// initialize WebGL
 		try{
 			//gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl') || canvas.getContext("webkit-3d") || canvas.getContext("moz-webgl");
@@ -161,6 +175,8 @@ function Engel(){
 	// setup
 	init();
 }
+
+Engel.UI;
 
 var engelInterval;
 

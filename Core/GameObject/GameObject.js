@@ -18,10 +18,10 @@ function GameObject(objName){
 	
 	// sub-parts of GameObject
 	var location = new Location();
-	this.mesh;
+	//this.mesh;
 	var components = [];	
 
-	mesh = new Mesh();
+	var mesh = new Mesh();
 
 	this.getLocation = function(){
 		return location;
@@ -44,7 +44,9 @@ function GameObject(objName){
 
 	var awake = function(){
 		debug.log(name + ": object.awake");
-		
+
+		mesh = new Mesh();	
+
 		start();
 	}
 
@@ -65,6 +67,8 @@ function GameObject(objName){
 	this.draw = function(){
 		if(mesh)
 			mesh.draw(location);
+		else
+			debug.log("mesh not found - GameObject");
 
 		// draw components
 		for(var i = 0; i < components.length; i++){
