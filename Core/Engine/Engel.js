@@ -3,6 +3,7 @@ var input;
 var debug;
 var gl;
 var gui;
+var assets;
 
 // engine definition
 function Engel(){
@@ -11,6 +12,7 @@ function Engel(){
 	debug = new Debug();
 	input = new Input();
 	gui = new GUI();
+	assets = new Assets();
 
 	this.deltaTime = 0;
 	
@@ -26,6 +28,9 @@ function Engel(){
 	//////////////////////
 
 	this.load = function(){
+		// add floating point texture to assets
+		assets.addTexturef([0.1,0.35,1.0,1.0, 1.0,0.6,0.1,1.0], 2, 1, gl.RGBA);
+
 		this.camera = new Camera();
 		//var cameraBehavior = new RTS_CameraComponent();
 		this.camera.setBehavior(new RTS_CameraComponent());
@@ -34,6 +39,8 @@ function Engel(){
 
 		gameObjects.push(new GameObject("first"));
 		gameObjects[0].setName("GameObject");
+
+		gameObjects.push(new RTS_Unit());
 
 		var component = new EngelComponent();
 		gameObjects[0].addComponent(component);
@@ -83,8 +90,7 @@ function Engel(){
 			gameObjects[i].update();
 		}
 
-		//if(input)
-			input.update();
+		input.update();
 
 		if(typeof Engel.UI === 'undefined' || Engel.UI == null)
 			Engel.UI = new RTS_UI();
@@ -95,6 +101,8 @@ function Engel(){
 		catch(e){
 			debug.log("null UI");
 		}
+
+		gui.checkMouseOver();
 	}
 
 	// draw objects to screen
@@ -107,7 +115,7 @@ function Engel(){
 		}
 
 		gui.draw();
-
+		gui.clear();
 	}
 
 
@@ -151,6 +159,9 @@ function Engel(){
 			gl = WebGLUtils.setupWebGL(this.canvas);
 			gl.viewportWidth = this.canvas.width;
 			gl.viewportHeight = this.canvas.height;
+
+			// enable floating point textures
+			gl.getExtension("OES_texture_float");
 		}
 		catch(e){
 			debug.log("Failed to create WebGL context");

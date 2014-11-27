@@ -26,7 +26,21 @@ function GameObject(objName){
 	this.getLocation = function(){
 		return location;
 	}
-	
+
+
+	this.checkMouseOver = function(){
+		// check mouseOver, if true, call onMouseOver()
+	}
+
+	var onMouseOver = function(){
+		for(var i = 0; i < components.length; i++){
+			components[i].onMouseOver();
+
+			// also check mouseDown
+			if(Input.mouseButton[0])
+				components[i].onMouseDown();
+		}
+	}
 
 	this.addComponent = function(component){
 		component.gameObject = this;

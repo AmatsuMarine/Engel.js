@@ -1,49 +1,47 @@
 function GUI(canvas){
 	var guis = [];
 
-	var clear = function(){
-		guis = [];
+	this.clear = function(){
+		while(guis.length > 0)
+			guis.pop();
+
+		//debug.log("clear gui");
 	}
 
 	this.draw = function(){
-		checkMouseOver();
-	
-		for(var i = 0; i < guis.length; i++){
-			guis[i].draw();
-		}
+		//debug.log("Number of GUI Elements: " + guis.length);	
 
-		clear();
+		for(var i = 0; i < guis.length; i++){
+			try{
+				guis[i].draw();
+			} catch(e){
+				debug.log("Failed to draw GUI element");
+			}
+		}
 	}
 
 	this.add = function(ui){
 		guis.push(ui);
 	}
 
-	var checkMouseOver = function(){
+	this.checkMouseOver = function(){
 		for(var i = 0; i < guis.length; i++){
-			if(guis[i].checkMouseOver()){
-				guis[i].onMouseOver();
-				//break;
+			if(guis[i] != null){
+				if(guis[i].checkMouseOver()){
+					try{
+						guis[i].onMouseOver();
+						//break;
+					} catch(e) { }
+				}
 			}
 		}
 	}
 }
 
+// Check if mouse is inside GL placement rectangle with floating point positioning [-1:1] for (x,y)
+// rect array format = [x, y, width, height]
+function mouseInRect(rectArray){
+	var mousePos = input.getMousePosZoned();
 
-/*
-GUI.Text(text, x, y, style, font){
-	//if(arguments.length >= 1)
-		//text = typeof text !== 'undefined' ? text : " ";
-	//if(arguments.length >= 2)
-		//x = typeof x !== 'undefined' ? x : 10;
-	//if(arguments.length >= 3)
-		//y = typeof y !== 'undefined' ? y : 50;
-	//if(arguments.legnth >= 4)
-		//style = typeof style !== 'undefined' ? style : "#000000";
-
-	//var context = document.getElementById('Engel-Canvas');
-	//var contx = _canvas.getContext('2d');
-	contx.font = font;
-	contx.fillStyle = style;
-	contx.fillText(text,x,y);
-}*/
+	return mousePos[0] >= rectArray[0] && mousePos[0] <= rectArray[0] + rectArray[2] && mousePos[1] <= rectArray[1] && mousePos[1] >= rectArray[1] - rectArray[3];
+}
