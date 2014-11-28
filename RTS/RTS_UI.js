@@ -4,29 +4,35 @@ function RTS_UI(){
 	var commandCardFrame;
 	var resourceFrame;
 
+	var guiText;
+
 	this.draw = function(){
-		if(!minimapFrame){
+		/*if(!minimapFrame){
 			init();
 			debug.log("RTS_UI null");
-		}
+		}*/
 
-		minimapFrame.draw();
-		commandCardFrame.draw();
-		resourceFrame.draw();
-
-	}
-
-	this.update = function(){
+		//gui.add(minimapFrame);
 
 		gui.add(minimapFrame);
 		gui.add(commandCardFrame);
 		gui.add(resourceFrame);
 
+		// attempt to draw text
+		guiText.drawText('Dust', 50);
+	}
+
+	this.update = function(){
+		//gui.add(minimapFrame);
+		//gui.add(commandCardFrame);
+		//gui.add(resourceFrame);
+
+		//guiText.drawText("Font_Sans", 12, [-1,0,1,-1]);
 	}
 
 	var init = function(){
 
-		minimapFrame = new GUI_Texture([-1.0,-0.25,0.65,0.75], "Texture0");
+		minimapFrame = new GUI_Texture([-1.0,-0.25,0.65,0.75], "Font_Sans");
 		commandCardFrame = new RTS_AbilityCard();
 		resourceFrame = new GUI_Texture([0.65,1.0,0.35,0.15], "Texture0");
 
@@ -38,6 +44,9 @@ function RTS_UI(){
 
 				gui.add(this.mouseOverTex);
 		}
+
+		guiText = new GUI_Font("Font_Sans");
+//		guiText = new GUI_Font("Texture0");
 
 		debug.log("create RTS_UI");
 	}

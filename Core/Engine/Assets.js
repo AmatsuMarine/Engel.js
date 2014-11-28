@@ -3,7 +3,7 @@ function Assets(){
 	var texNames = [];
 
 	// add texture by Integer Array
-	this.addTexturei = function(colors, width, height, type){
+	this.addTexturei = function(colors, width, height, type, name){
 		var pixelIntArray = new Uint8Array(colors);
 
 		var texture = gl.createTexture();
@@ -18,7 +18,11 @@ function Assets(){
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
 		textures.push(texture);
-		texNames.push("Texture" + texNames.length);
+
+		if(!name)
+			texNames.push("Texture" + texNames.length);
+		else
+			texNames.push(name);
 	}
 
 	// add texture by Float Array

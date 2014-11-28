@@ -14,6 +14,8 @@ function Engel(){
 	gui = new GUI();
 	assets = new Assets();
 
+	var UI = null;
+
 	this.deltaTime = 0;
 	
 	// Cameras
@@ -28,8 +30,8 @@ function Engel(){
 	//////////////////////
 
 	this.load = function(){
-		// add floating point texture to assets
-		assets.addTexturef([0.1,0.35,1.0,1.0, 1.0,0.6,0.1,1.0], 2, 1, gl.RGBA);
+		loadEngelAssets();
+		UI = new RTS_UI();
 
 		this.camera = new Camera();
 		//var cameraBehavior = new RTS_CameraComponent();
@@ -92,15 +94,11 @@ function Engel(){
 
 		input.update();
 
-		if(typeof Engel.UI === 'undefined' || Engel.UI == null)
-			Engel.UI = new RTS_UI();
+//		if(typeof this.UI === 'undefined' || this.UI == null)
+//			this.UI = new RTS_UI();
 
-		try{
-			Engel.UI.update();
-		}
-		catch(e){
-			debug.log("null UI");
-		}
+		if(UI)
+			UI.update();
 
 		gui.checkMouseOver();
 	}
@@ -110,10 +108,17 @@ function Engel(){
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		gl.viewport(0, 0, canvas.width, canvas.height);
 
+		// draw objects
 		for(var i = 0; i < gameObjects.length; i++){
 			gameObjects[i].draw();
 		}
 
+		// draw UI
+		if(UI)
+			UI.draw();
+
+
+		// draw objects addded to GUI
 		gui.draw();
 		gui.clear();
 	}
@@ -186,8 +191,6 @@ function Engel(){
 	// setup
 	init();
 }
-
-Engel.UI;
 
 var engelInterval;
 

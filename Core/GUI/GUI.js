@@ -4,13 +4,9 @@ function GUI(canvas){
 	this.clear = function(){
 		while(guis.length > 0)
 			guis.pop();
-
-		//debug.log("clear gui");
 	}
 
 	this.draw = function(){
-		//debug.log("Number of GUI Elements: " + guis.length);	
-
 		for(var i = 0; i < guis.length; i++){
 			try{
 				guis[i].draw();
