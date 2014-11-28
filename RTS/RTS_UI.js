@@ -7,19 +7,12 @@ function RTS_UI(){
 	var guiText;
 
 	this.draw = function(){
-		/*if(!minimapFrame){
-			init();
-			debug.log("RTS_UI null");
-		}*/
-
-		//gui.add(minimapFrame);
-
 		gui.add(minimapFrame);
 		gui.add(commandCardFrame);
 		gui.add(resourceFrame);
 
 		// attempt to draw text
-		guiText.drawText('Dust', 50);
+		guiText.drawText('RustY', 50);
 	}
 
 	this.update = function(){
@@ -42,11 +35,10 @@ function RTS_UI(){
 			if(!this.mouseOverTex)
 				this.mouseOverTex = new GUI_Texture([-0.1,0.1,0.2,0.2], "Texture0");
 
-				gui.add(this.mouseOverTex);
+			gui.add(this.mouseOverTex);
 		}
 
 		guiText = new GUI_Font("Font_Sans");
-//		guiText = new GUI_Font("Texture0");
 
 		debug.log("create RTS_UI");
 	}

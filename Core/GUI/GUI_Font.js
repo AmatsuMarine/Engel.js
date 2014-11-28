@@ -1,7 +1,7 @@
 function GUI_Font(tex){
 	this.texture = tex;
 	this._columns = 8;
-	this._rows = Math.floor(85.0 / this._columns);
+	this._rows = Math.ceil(85.0 / this._columns);
 }
 
 function GUI_Font_Render(tex, columns, rows, text){
@@ -25,7 +25,7 @@ GUI_Font_Render.prototype.createBuffers = function(){
 //	px = px / engelEngine.canvas.width; // set px to actual pixel size
 
 	var uvLetterWidth = 1 / this._columns;
-	var uvLetterHeight = 1 / this._rows;
+	var uvLetterHeight = 1.0 / this._rows;
 
 	var vertices = [];
 	var uvs = [];
@@ -42,7 +42,8 @@ GUI_Font_Render.prototype.createBuffers = function(){
 		row *= uvLetterHeight;
 		col *= uvLetterWidth;
 
-		row = 1 - row;
+		// OpenGL uses bottom-left coordinates
+		row = 1 - row; // flip the y coordinates
 
 //debug.log(row + " " + col);
 

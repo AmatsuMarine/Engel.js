@@ -60,16 +60,17 @@ function Engel(){
 		component.update = function(){
 			if(typeof this.moveLeft === 'undefined')
 				this.moveLeft = true;
+			var speed = 1*engelEngine.deltaTime;
 
 			//debug.log(this.getLocation().getPosition());
-			if(this.getLocation().getPosition()[0] < -2)			
+			if(this.getLocation().getPosition()[0] < -2)
 				this.moveLeft = true;
 			else if(this.getLocation().getPosition()[0] > 2)
 				this.moveLeft = false;
 			if(this.moveLeft)
-				this.getLocation().translate([0.01,0,0]);
+				this.getLocation().translate([speed,0,0]);
 			else
-				this.getLocation().translate([-0.01,0,0]);
+				this.getLocation().translate([-speed,0,0]);
 		};
 		
 		//this.ui = new RTS_UI();
@@ -97,10 +98,10 @@ function Engel(){
 //		if(typeof this.UI === 'undefined' || this.UI == null)
 //			this.UI = new RTS_UI();
 
-		if(UI)
-			UI.update();
+//		if(UI)
+//			UI.update();
 
-		gui.checkMouseOver();
+		
 	}
 
 	// draw objects to screen
@@ -114,8 +115,11 @@ function Engel(){
 		}
 
 		// draw UI
-		if(UI)
+		if(UI){
 			UI.draw();
+			gui.checkMouseOver();
+			UI.update();
+		}
 
 
 		// draw objects addded to GUI
@@ -125,25 +129,23 @@ function Engel(){
 
 
 	this._runStartTime;
-	this._runEndTime;
+	this._lastStartTime;
 	// run loop
 	this.run = function(){
 		//var _runStartTime, _runEndTime;
 
 		this._runStartTime = new Date();
 
-		if(this._runEndTime)
-			this.deltaTime = (this._runStartTime.getTime() - this._runEndTime.getTime()) / 1000;
+		if(this._lastStartTime)
+			this.deltaTime = (this._runStartTime.getTime() - this._lastStartTime.getTime()) / 1000;
 		else
 			this.deltaTime = 0;
+
+		this._lastStartTime = new Date();
 
 		// run loop
 		update();
 		draw();
-
-		// store end time
-		this._runEndTime = new Date();
-		//this.deltaTime = (_runEndTime.getTime() - _runStartTime.getTime()) / 1000;
 
 //		debug.primary("deltaTime = " + this.deltaTime);
 	}
