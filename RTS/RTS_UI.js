@@ -12,7 +12,7 @@ function RTS_UI(){
 		gui.add(resourceFrame);
 
 		// attempt to draw text
-		guiText.drawText('RustY', 50);
+		guiText.drawText('RustY Test', 25);
 	}
 
 	this.update = function(){

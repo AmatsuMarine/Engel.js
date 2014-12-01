@@ -1,7 +1,7 @@
 function GUI_Font(tex){
 	this.texture = tex;
 	this._columns = 8;
-	this._rows = Math.ceil(85.0 / this._columns);
+	this._rows = Math.ceil(94.0 / this._columns);
 }
 
 function GUI_Font_Render(tex, columns, rows, text){
@@ -11,7 +11,7 @@ function GUI_Font_Render(tex, columns, rows, text){
 	this._rows = rows;
 
 	this.text = text;
-	this.pt = 0.08; // points not converted to pixels yet
+	this.pt = 20; // points not converted to pixels yet
 
 	this.createBuffers();
 }
@@ -21,11 +21,11 @@ GUI_Font_Render.prototype.constructor = GUI_Font_Render;
 
 
 GUI_Font_Render.prototype.createBuffers = function(){
-	var px = this.pt/0.75; // point to pixel conversion
-//	px = px / engelEngine.canvas.width; // set px to actual pixel size
+	var px = this.pt*96/72; // point to pixel conversion
+	px /= Engel.canvas.width /2; // scale to size
 
 	var uvLetterWidth = 1 / this._columns;
-	var uvLetterHeight = 1.0 / this._rows;
+	var uvLetterHeight = 1 / this._rows;
 
 	var vertices = [];
 	var uvs = [];
@@ -57,13 +57,13 @@ GUI_Font_Render.prototype.createBuffers = function(){
 		vertices.push(px);
 
 		uvs.push(col); // x
-		uvs.push(row); // y
+		uvs.push(row - uvLetterHeight); // y
+		uvs.push(col + uvLetterWidth); // x
+		uvs.push(row - uvLetterHeight); // y
 		uvs.push(col + uvLetterWidth); // x
 		uvs.push(row); // y
-		uvs.push(col + uvLetterWidth); // x
-		uvs.push(row + uvLetterHeight); // y
 		uvs.push(col); // x
-		uvs.push(row + uvLetterHeight); // y
+		uvs.push(row); // y
 
 		indices.push(i*4);
 		indices.push(i*4+1);
@@ -104,5 +104,6 @@ GUI_Font_Render.prototype.createBuffers = function(){
 
 GUI_Font.prototype.drawText = function(text, pt){
 	var render = new GUI_Font_Render(this.texture, this._columns, this._rows, text);
+	render.pt = pt;
 	gui.add(render);
 };
