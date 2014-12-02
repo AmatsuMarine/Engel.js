@@ -1,6 +1,6 @@
 function Assets(){
 	var textures = [];
-	var texNames = [];
+	var levels = []; // levels saved as function;
 
 	// add texture by Integer Array
 	this.addTexturei = function(colors, width, height, type, name){
@@ -19,14 +19,15 @@ function Assets(){
 
 		textures.push(texture);
 
+		// associative array
 		if(!name)
-			texNames.push("Texture" + texNames.length);
+			textures["Texture" + (textures.length-1)] = texture;
 		else
-			texNames.push(name);
+			textures["" + name] = texture; // allow name to be a number as well as a string
 	}
 
 	// add texture by Float Array
-	this.addTexturef = function(colors, width, height, type){
+	this.addTexturef = function(colors, width, height, type, name){
 		var pixelFloatArray = new Float32Array(colors);
 
 		var texture = gl.createTexture();
@@ -41,14 +42,31 @@ function Assets(){
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
 		textures.push(texture);
-		texNames.push("Texture" + texNames.length);
+
+		// associative array
+		if(!name)
+			textures["Texture" + (textures.length-1)] = texture;
+		else
+			textures["" + name] = texture; // allow name to be a number as well as a string
+	}
+
+	this.saveLevel = function(name, fn){
+		levels.push(fn);
+		
+		// associative array
+		if(!name)
+			levels["Level" + (levels.length-1)] = fn;
+		else
+			levels["" + name] = fn; // allow name to be a number as well as a string
 	}
 
 	// get texture by either array index and name
 	this.getTexture = function(id){
-		if(typeof id === 'number')
-			return textures[id];
-		
-		return textures[texNames.indexOf(id)];
+		return textures[id];
+	}
+
+	// build level from function
+	this.getLevel = function(id){
+		levels[id](); // call level build function
 	}
 }

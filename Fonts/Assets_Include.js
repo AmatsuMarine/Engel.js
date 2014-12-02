@@ -1,4 +1,45 @@
 var loadEngelAssets = function(){
+	assets.saveLevel("Demo", function(){
+		engelEngine.setUI(new RTS_UI());
+
+		engelEngine.camera = new Camera();
+		engelEngine.camera.setBehavior(new RTS_CameraComponent());
+		debug.log("created camera in load");
+
+		var object = new GameObject("first");
+		engelEngine.addGameObject(object);
+
+		engelEngine.addGameObject(new RTS_Unit());
+
+		var component = new EngelComponent();
+		object.addComponent(component);
+		
+		/*var methods = {
+			'update': function() {
+				debug.log("component.update");
+				component.getLocation().translate([0.01,0,0]);
+				debug.log("component.update 2");
+				},
+			'onGUI': function() {debug.log("component.onGUI");}
+		};
+		component.addMethods(methods);*/
+
+		component.update = function(){
+			if(typeof this.moveLeft === 'undefined')
+				this.moveLeft = true;
+			var speed = 1*engelEngine.deltaTime;
+
+			if(this.getLocation().getPosition()[0] < -2)
+				this.moveLeft = true;
+			else if(this.getLocation().getPosition()[0] > 2)
+				this.moveLeft = false;
+			if(this.moveLeft)
+				this.getLocation().translate([speed,0,0]);
+			else
+				this.getLocation().translate([-speed,0,0]);
+		};
+	});
+
 	// add floating point texture to assets
 	assets.addTexturef([0.1,0.35,1.0,1.0, 1.0,0.6,0.1,1.0], 2, 1, gl.RGBA);
 

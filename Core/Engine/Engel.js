@@ -14,12 +14,14 @@ function Engel(){
 	gui = new GUI();
 	assets = new Assets();
 
+	// User Interface
 	var UI = null;
 
+	// time between frames
 	this.deltaTime = 0;
 	
 	// Cameras
-	this.camera;// = new Camera();
+	this.camera;
 	
 	// test GameObjects
 	var gameObjects = [];
@@ -28,53 +30,22 @@ function Engel(){
 	//////////////////////
 	// Engine functions //
 	//////////////////////
+	this.loadLevel = function(id){
+		gameObjects = [];
+		assets.getLevel(id);
+	}
+
+	this.setUI = function(newUI){
+		UI = newUI;
+	}
+
+	this.addGameObject = function(gameObject){
+		gameObjects.push(gameObject);
+	}
 
 	this.load = function(){
 		loadEngelAssets();
-		UI = new RTS_UI();
-
-		this.camera = new Camera();
-		//var cameraBehavior = new RTS_CameraComponent();
-		this.camera.setBehavior(new RTS_CameraComponent());
-		engelEngine.camera = this.camera;
-		debug.log("created camera in load");
-
-		gameObjects.push(new GameObject("first"));
-		gameObjects[0].setName("GameObject");
-
-		gameObjects.push(new RTS_Unit());
-
-		var component = new EngelComponent();
-		gameObjects[0].addComponent(component);
-		
-		/*var methods = {
-			'update': function() {
-				debug.log("component.update");
-				component.getLocation().translate([0.01,0,0]);
-				debug.log("component.update 2");
-				},
-			'onGUI': function() {debug.log("component.onGUI");}
-		};
-		component.addMethods(methods);*/
-
-		component.update = function(){
-			if(typeof this.moveLeft === 'undefined')
-				this.moveLeft = true;
-			var speed = 1*engelEngine.deltaTime;
-
-			//debug.log(this.getLocation().getPosition());
-			if(this.getLocation().getPosition()[0] < -2)
-				this.moveLeft = true;
-			else if(this.getLocation().getPosition()[0] > 2)
-				this.moveLeft = false;
-			if(this.moveLeft)
-				this.getLocation().translate([speed,0,0]);
-			else
-				this.getLocation().translate([-speed,0,0]);
-		};
-		
-		//this.ui = new RTS_UI();
-		
+		this.loadLevel("Demo");
 	}
 
 	// updates objects on screen
