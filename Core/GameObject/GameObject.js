@@ -35,10 +35,6 @@ function GameObject(objName){
 	this.onMouseOver = function(){
 		for(var i = 0; i < components.length; i++){
 			components[i].onMouseOver();
-
-			// also check mouseDown
-			if(Input.mouseButton[0])
-				components[i].onMouseDown();
 		}
 	}
 
@@ -64,6 +60,7 @@ function GameObject(objName){
 		}
 	}
 
+	// return true if there was a collision with mesh triangle
 	this.checkCollisionRay = function(start, end, out){
 		if(this.mesh)
 			return this.mesh.checkCollision(start, end, location, out);
@@ -72,16 +69,12 @@ function GameObject(objName){
 	}
 
 	var awake = function(){
-		debug.log(name + ": object.awake");
-
 		this.mesh = new Mesh();	
 
 		start();
 	}
 
-	var start = function(){
-		debug.log(name + ": object.start");
-	}
+	var start = function(){}
 
 	this.update = function(){
 		// update components

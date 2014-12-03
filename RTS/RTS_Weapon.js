@@ -1,9 +1,22 @@
-function RTS_Weapon(){
+function RTS_Weapon(gameObject){
+	this.gameObject = gameObject;
+
 	this.cooldown = 0;
-	this.damage = 1;
+	this.damage = 15;
 	this.range = 1;
 
 	this._reloadTime = 1;
+}
+
+RTS_Weapon.prototype.attackAbility = function(){
+	var ability = new RTS_Ability();
+	ability.abilityName = "Attack";
+	ability.description = "Attack Command";
+	ability.effect = function(){
+		this.caster.weapon.attack(this.caster);
+	};
+
+	return ability;
 }
 
 RTS_Weapon.prototype.attack = function(target){
@@ -12,9 +25,7 @@ RTS_Weapon.prototype.attack = function(target){
 	if(this._reloadTime <= 0){
 		this._reloadTime = this.cooldown;
 
-		var weaponDamage = this.damage;
-
-		target.damage(weaponDamage);
+		target.damage(this.damage);
 	}
 };
 

@@ -4,12 +4,16 @@ var loadEngelAssets = function(){
 
 		engelEngine.camera = new Camera();
 		engelEngine.camera.setBehavior(new RTS_CameraComponent());
-		debug.log("created camera in load");
-
-		var object = new GameObject("first");
-		engelEngine.addGameObject(object);
 
 		engelEngine.addGameObject(new RTS_Unit());
+
+		var unit2 = new RTS_Unit();
+		unit2.location.translate([3,0,0]);
+
+		engelEngine.addGameObject(unit2);
+
+/*		var object = new GameObject("first");
+		engelEngine.addGameObject(object);
 
 		var component = new EngelComponent();
 		object.addComponent(component);
@@ -28,6 +32,7 @@ var loadEngelAssets = function(){
 			else
 				this.getLocation().translate([-speed,0,0]);
 		};
+*/
 	});
 
 	// add floating point texture to assets

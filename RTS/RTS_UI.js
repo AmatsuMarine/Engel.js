@@ -27,10 +27,16 @@ function RTS_UI(){
 
 	this.update = function(){
 		var out = {};
-		if(engelEngine.raycastScreen(input.mousePosZoned, 20, out)){
+		var hoverObject = engelEngine.raycastScreen(input.mousePosZoned, 20, out);
+		if(hoverObject){
 			clicked.position[0] = input.mousePosZoned[0];
 			clicked.position[1] = input.mousePosZoned[1];
 			gui.add(clicked);
+
+			hoverObject.onMouseOver();
+
+			if(Input.mouseButton[0])
+				hoverObject.onMouseDown();
 		}
 	}
 
@@ -47,5 +53,4 @@ function RTS_UI(){
 	}
 
 	init();
-	
 }

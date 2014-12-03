@@ -43,6 +43,13 @@ function Engel(){
 		gameObjects.push(gameObject);
 	}
 
+	this.removeGameObject = function(gameObject){
+		for(var i = 0; i < gameObjects.length; i++){
+			if(gameObjects[i] == gameObject)
+				gameObjects.splice(i,1);
+		}
+	}
+
 	///////////////////////
 	// Raycast functions //
 	///////////////////////
@@ -59,7 +66,7 @@ function Engel(){
 		end[2] = direction[2] * distance + start[2];
 
 		var _out = {};
-		var _obj;
+		var _obj = null;
 		var _distance = -1;
 
 		for(var i = 0; i < gameObjects.length; i++){
@@ -124,13 +131,15 @@ function Engel(){
 			UI.update();
 		}
 
-		var mouseOverObject = engelEngine.raycastScreen(input.mousePosZoned);
+/*		var out = {};
+		var mouseOverObject = engelEngine.raycastScreen(input.mousePosZoned, 20, out);
 		if(mouseOverObject){
+			debug.log("mouseover object");
 			mouseOverObject.onMouseOver();
 			if(Input.mouseButton[0])
 				mouseOverObject.onMouseDown();
 		}
-
+*/
 		// draw objects addded to GUI
 		gui.draw();
 		gui.clear();

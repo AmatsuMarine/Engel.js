@@ -5,11 +5,21 @@ function RTS_Movement(gameObj){
 	this._maxSpeed = 1;
 	this._acceleration = 5;
 	
-	this._targetLocation = 1;
+	this._targetLocation;
+}
 
-	var location = new Location();
-	location.translate([0,0,-5]);
-	this.move(location);
+RTS_Movement.prototype.moveAbility = function(){
+	var ability = new RTS_Ability();
+	ability.abilityName = "Move";
+	ability.description = "Move Command";
+	ability.effect = function(){
+		var location = new Location();
+		location.translate([this.caster.location.getPosition()[0],0,-9]);
+
+		this.caster.movement.move(location);
+	};
+
+	return ability;
 }
 
 RTS_Movement.prototype.move = function(location){

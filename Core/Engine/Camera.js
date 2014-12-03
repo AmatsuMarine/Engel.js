@@ -54,7 +54,7 @@ function Camera(){
 		eye[2] = 1;
 		eye[3] = 0;
 
-		var ray = multMatVec4(inverseCamera, eye);
+		var ray = multMatVec4(inversePerspective, eye);
 		
 		return eye;
 	}

@@ -1,6 +1,8 @@
 function RTS_AbilityCard(){
 	//GUI_Element.call(this, this.position, "RTS.AbilityCardTex");
 
+	this.gameObject;
+
 	this.position = [0.5,-0.35,0.5,0.65];
 	this.abilityOffset = 0.01;
 	this.abilityIconSize = 0.1;
@@ -14,6 +16,11 @@ function RTS_AbilityCard(){
 
 RTS_AbilityCard.prototype = Object.create(GUI_Element.prototype);
 RTS_AbilityCard.prototype.constructor = RTS_AbilityCard;
+
+RTS_AbilityCard.prototype.addAbility = function(ability, pos){
+	this.abilities[pos] = ability;
+	ability.caster = this.gameObject;
+}
 
 RTS_AbilityCard.prototype.update = function(){
 	for(var i = 0; i < this.abilities.length; i++){
@@ -39,4 +46,3 @@ RTS_AbilityCard.prototype.draw = function(){
 	}
 
 };
-

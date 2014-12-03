@@ -141,5 +141,4 @@ gl.bindBuffer(gl.ARRAY_BUFFER, guiTex.getTexCoordBuffer());
 
 		update = true;
 	}
-
 }

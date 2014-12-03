@@ -22,5 +22,3 @@ function Debug(){
 			logCtx.innerHTML = "<b>Debug Log</b>" + pLog + logs;
 	}
 }
-
-

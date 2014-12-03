@@ -1,5 +1,5 @@
 function RTS_Ability(){
-	this.icon = "Texture0";
+	this.icon = "Font_Sans";
 	this.abilityName = "Name";
 	this.description = "Description";
 
@@ -17,11 +17,20 @@ function RTS_Ability(){
 	this.position = [-1,1,0.5,0.5];
 
 	this.font = new GUI_Font("Font_Sans");
+
+	this.caster;
 }
 
 // manual cast ability
 RTS_Ability.prototype.cast = function(target){
-	this.timeRemaining = this.cooldown;
+	if(this.timeRemaining <= 0){
+		this.timeRemaining = this.cooldown;
+
+		// cast
+		try{
+			this.effect();
+		} catch(e) {}
+	}
 }
 
 // channel ability
@@ -43,8 +52,12 @@ RTS_Ability.prototype.onMouseOver = function(){
 RTS_Ability.prototype.draw = function(pos){
 	gui.add(new GUI_Texture(this.position, this.icon));
 
-	if(mouseInRect(this.position))
+	if(mouseInRect(this.position)){
 		this.onMouseOver();
+
+		if(Input.mouseButton[0])
+			this.cast();
+	}
 }
 
 RTS_Ability.prototype.update = function(){

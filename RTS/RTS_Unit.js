@@ -3,20 +3,31 @@ function RTS_Unit(){
 	this.health = 100;
 
 	this.location = new Location();
-//	this.location.rotate([5,0,0]);
+
+	this.icon = "Texture0";
 
 	this.movement = new RTS_Movement(this);
-	this.weapon = new RTS_Weapon();
-	this.armor = null;
+	this.weapon = new RTS_Weapon(this);
+	this.armor = new RTS_Armor(this);
 	this.abilityCard = new RTS_AbilityCard();
+	this.abilityCard.gameObject = this;
 
-	this.abilityCard.abilities[12] = new RTS_Ability();
+	this.abilityCard.addAbility(new RTS_Ability(), 12);
+
+	if(this.movement)
+		this.abilityCard.addAbility(this.movement.moveAbility(), 0);
+	if(this.weapon)
+		this.abilityCard.addAbility(this.weapon.attackAbility(), 3);
 
 	this.mesh = new Mesh();
-//	this.cost = new RTS_Resource(0);
+	this.cost = 10;
+
+	this.trainUnits = [];
+
+//	this.abilityQueue = [];
 }
 
-RTS_Unit.prototype.onMouseOver = function(){ debug.log("over");}
+RTS_Unit.prototype.onMouseOver = function(){}
 RTS_Unit.prototype.onMouseDown = function(){
 	player.selectedUnit = this;
 	player.money += engelEngine.deltaTime * 5;
@@ -36,12 +47,34 @@ RTS_Unit.prototype.getLocation = function(){
 }
 
 RTS_Unit.prototype.damage = function(damage){
+	if(this.armor)
+		damage = this.armor.takeDamage(damage);
+
 	this.health -= damage;
 
+	debug.log("Unit damaged for " + damage + " damage. " + this.health + " health remaining");
+
 	if(this.health <= 0){
-//		this.kill();
+		debug.log("Unit Killed");
+		this.kill();
 	}
 };
+
+RTS_Unit.prototype.kill = function(){
+	if(player.selectedUnit == this)
+		player.selectedUnit = null;
+
+	engelEngine.removeGameObject(this);
+}
+
+RTS_Unit.prototype.getIconTex = function(){
+	var icon = new GUI_Texture([0,0,0.1,0.1], this.icon);
+	return icon;
+}
+
+RTS_Unit.prototype.addTrainableUnit = function(unit){
+	this.trainUnits.push(unit);
+}
 
 RTS_Unit.prototype.update = function(){
 //	debug.log(this.location.getPosition());

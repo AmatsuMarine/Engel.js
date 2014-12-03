@@ -144,5 +144,3 @@ GUI_Element.prototype.getIndexBuffer = function(){
 		
 	return this.indexBuffer;
 };
-
-

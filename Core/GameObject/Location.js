@@ -129,5 +129,4 @@ function Location(){
 	}
 	
 	awake();
-
 }
