@@ -13,16 +13,6 @@ var loadEngelAssets = function(){
 
 		var component = new EngelComponent();
 		object.addComponent(component);
-		
-		/*var methods = {
-			'update': function() {
-				debug.log("component.update");
-				component.getLocation().translate([0.01,0,0]);
-				debug.log("component.update 2");
-				},
-			'onGUI': function() {debug.log("component.onGUI");}
-		};
-		component.addMethods(methods);*/
 
 		component.update = function(){
 			if(typeof this.moveLeft === 'undefined')

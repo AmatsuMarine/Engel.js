@@ -18,9 +18,9 @@ function Input(){
 		Input.mouseButton[1] = input.nextMouseButton[1];
 		Input.mouseButton[2] = input.nextMouseButton[2];
 
-		input.nextMouseButton[0] = false;
-		input.nextMouseButton[1] = false;
-		input.nextMouseButton[2] = false;
+//		input.nextMouseButton[0] = false;
+//		input.nextMouseButton[1] = false;
+//		input.nextMouseButton[2] = false;
 	}
 
 
@@ -73,8 +73,10 @@ Input.handleMouseMove = function(event){
 	var maxX = -1, maxY = -1;
 
 	if(Engel.canvas){
-		offsetX = Engel.canvas.getBoundingClientRect().left;
-		offsetY = Engel.canvas.getBoundingClientRect().top;
+//		offsetX = Engel.canvas.getBoundingClientRect().left;
+//		offsetY = Engel.canvas.getBoundingClientRect().top;
+		offsetX = $('#Engel-Canvas').offset().left;
+		offsetY = $('#Engel-Canvas').offset().top;
 
 		maxX = Engel.canvas.width;
 		maxY = Engel.canvas.height;
@@ -101,9 +103,15 @@ Input.handleMouseMove = function(event){
 		input.mousePos[0] = 0;
 	if(input.mousePos[1] < 0)
 		input.mousePos[1] = 0;
+
+	document.selection.empty();
 }
 
 // store mouse click
-Input.handleMouseClick = function(event){
+Input.handleMouseDown = function(event){
 	input.nextMouseButton[0] = true;
+}
+
+Input.handleMouseRelease = function(event){
+	input.nextMouseButton[0] = false;
 }

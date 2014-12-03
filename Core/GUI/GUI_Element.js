@@ -19,7 +19,7 @@ GUI_Element.prototype.init = function(rect, tex){
 		this.position = rect;
 
 	if(!tex)
-		this.texture = assets.getTexture("texture0");
+		this.texture = assets.getTexture("Texture0");
 	else
 		this.texture = assets.getTexture(tex);
 

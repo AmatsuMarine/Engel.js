@@ -95,7 +95,6 @@ debug.log("Shader Program null - created new");
 		gl.uniformMatrix4fv(program.pMatrixUniform, false, pMatrix);
 
 		mat4.identity(mvMatrix);
-		mat4.translate(mvMatrix, [-0.25, 0.0, 0.0]);
 
 		if(!location){
 			debug.log("Shader location null");
@@ -117,7 +116,7 @@ debug.log("Shader Program null - created new");
 	this.draw = function(location){
 		gl.useProgram(this.getProgram());
 
-		this.setBuffers();	
+		this.setBuffers();
 
 		gl.bindBuffer(gl.ARRAY_BUFFER, mesh.getVertexBuffer());
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, mesh.getIndexBuffer());

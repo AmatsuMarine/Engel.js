@@ -21,7 +21,7 @@ function GameObject(objName){
 	//this.mesh;
 	var components = [];	
 
-	var mesh = new Mesh();
+	this.mesh = new Mesh();
 
 	this.getLocation = function(){
 		return location;
@@ -32,13 +32,21 @@ function GameObject(objName){
 		// check mouseOver, if true, call onMouseOver()
 	}
 
-	var onMouseOver = function(){
+	this.onMouseOver = function(){
 		for(var i = 0; i < components.length; i++){
 			components[i].onMouseOver();
 
 			// also check mouseDown
 			if(Input.mouseButton[0])
 				components[i].onMouseDown();
+		}
+	}
+
+	this.onMouseDown = function(){
+		debug.log("gameObject mouseDown");
+
+		for(var i = 0; i < components.length; i++){
+			components[i].onMouseDown();
 		}
 	}
 
@@ -56,10 +64,17 @@ function GameObject(objName){
 		}
 	}
 
+	this.checkCollisionRay = function(start, end, out){
+		if(this.mesh)
+			return this.mesh.checkCollision(start, end, location, out);
+
+		return false;
+	}
+
 	var awake = function(){
 		debug.log(name + ": object.awake");
 
-		mesh = new Mesh();	
+		this.mesh = new Mesh();	
 
 		start();
 	}
@@ -79,8 +94,8 @@ function GameObject(objName){
 	}
 
 	this.draw = function(){
-		if(mesh)
-			mesh.draw(location);
+		if(this.mesh)
+			this.mesh.draw(location);
 		else
 			debug.log("mesh not found - GameObject");
 

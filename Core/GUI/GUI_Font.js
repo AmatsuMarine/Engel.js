@@ -4,8 +4,11 @@ function GUI_Font(tex){
 	this._rows = Math.ceil(94.0 / this._columns);
 }
 
-function GUI_Font_Render(tex, columns, rows, text){
-	GUI_Element.call(this, [0,0,1,1], tex);
+function GUI_Font_Render(tex, columns, rows, text, position){
+	if(!position)
+		GUI_Element.call(this, [0,0,1,1], tex);
+	else
+		GUI_Element.call(this, position, tex);
 
 	this._columns = columns;
 	this._rows = rows;
@@ -47,14 +50,14 @@ GUI_Font_Render.prototype.createBuffers = function(){
 
 //debug.log(row + " " + col);
 
-		vertices.push(i*px);
-		vertices.push(0);
-		vertices.push((i+1)*px);
-		vertices.push(0);
-		vertices.push((i+1)*px);
-		vertices.push(px);
-		vertices.push(i*px);
-		vertices.push(px);
+		vertices.push(i*px + this.position[0]);
+		vertices.push(-px + this.position[1]);
+		vertices.push((i+1)*px + this.position[0]);
+		vertices.push(-px + this.position[1]);
+		vertices.push((i+1)*px + this.position[0]);
+		vertices.push(0 + this.position[1]);
+		vertices.push(i*px + this.position[0]);
+		vertices.push(0 + this.position[1]);
 
 		uvs.push(col); // x
 		uvs.push(row - uvLetterHeight); // y
@@ -102,8 +105,8 @@ GUI_Font_Render.prototype.createBuffers = function(){
 };
 
 
-GUI_Font.prototype.drawText = function(text, pt){
-	var render = new GUI_Font_Render(this.texture, this._columns, this._rows, text);
+GUI_Font.prototype.drawText = function(text, pt, position){
+	var render = new GUI_Font_Render(this.texture, this._columns, this._rows, text, position);
 	render.pt = pt;
 	gui.add(render);
 };

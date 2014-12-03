@@ -43,9 +43,47 @@ function Engel(){
 		gameObjects.push(gameObject);
 	}
 
+	///////////////////////
+	// Raycast functions //
+	///////////////////////
+
+	// vec[3], vec[3], float
+	// returns collider array
+	this.raycast = function(start, direction, distance, out){
+		if(!distance)
+			distance = this.camera.farDistance;
+
+		var end = [];
+		end[0] = direction[0] * distance + start[0];
+		end[1] = direction[1] * distance + start[1];
+		end[2] = direction[2] * distance + start[2];
+
+		var _out = {};
+		var _obj;
+		var _distance = -1;
+
+		for(var i = 0; i < gameObjects.length; i++){
+			if(gameObjects[i].checkCollisionRay(start, end, _out)){
+				//debug.log("raycast: " + i);
+				if(_out.distance > _distance){
+					_obj = gameObjects[i];
+					out = _out;
+					_distance = _out.distance;
+				}
+			}
+		}
+
+		return _obj;
+	}
+
+	this.raycastScreen = function(pos, distance, out){
+		return this.raycast(this.camera.getLocation().getPosition(), this.camera.getWorldRay(pos), distance, out);
+	}
+
+
 	this.load = function(){
 		loadEngelAssets();
-		this.loadLevel("Demo");
+		this.loadLevel(0);
 	}
 
 	// updates objects on screen
@@ -62,17 +100,11 @@ function Engel(){
 		
 		for(var i = 0; i < gameObjects.length; i++){
 			gameObjects[i].update();
+			//debug.log(gameObjects[i].getLocation().getPosition());
 		}
 
 		input.update();
 
-//		if(typeof this.UI === 'undefined' || this.UI == null)
-//			this.UI = new RTS_UI();
-
-//		if(UI)
-//			UI.update();
-
-		
 	}
 
 	// draw objects to screen
@@ -92,6 +124,12 @@ function Engel(){
 			UI.update();
 		}
 
+		var mouseOverObject = engelEngine.raycastScreen(input.mousePosZoned);
+		if(mouseOverObject){
+			mouseOverObject.onMouseOver();
+			if(Input.mouseButton[0])
+				mouseOverObject.onMouseDown();
+		}
 
 		// draw objects addded to GUI
 		gui.draw();
@@ -128,8 +166,9 @@ function Engel(){
 		Engel.canvas = this.canvas;
 
 		// add listeners to the canvas
-		Engel.canvas.addEventListener("click", Input.handleMouseClick);
-		Engel.canvas.addEventListener("mousemove", Input.handleMouseMove);
+		Engel.canvas.onmousedown = Input.handleMouseDown;
+		Engel.canvas.onmousemove = Input.handleMouseMove;
+		Engel.canvas.onmouseup = Input.handleMouseRelease;
 
 		// initialize WebGL
 		try{

@@ -26,7 +26,6 @@ function GUI(canvas){
 				if(guis[i].checkMouseOver()){
 					try{
 						guis[i].onMouseOver();
-						//break;
 					} catch(e) { }
 				}
 			}

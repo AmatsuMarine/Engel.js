@@ -4,6 +4,8 @@ function Location(){
 	var rotation = [0,0,0];
 	var scale = [1,1,1];
 
+	this.forward = [0,0,1];
+
 	// initialize variables
 	var awake = function(){
 		if(!position){
@@ -36,11 +38,20 @@ function Location(){
 		rotation[0] += r[0];
 		rotation[1] += r[1];
 		rotation[2] += r[2];
+
+		this.forward = [rotation[0], rotation[1], -rotation[2]];
 	}
 	this.scale = function(s){
-		scale[0] *= s[0];
-		scale[1] *= s[1];
-		scale[2] *= s[2];
+		if(typeof s === 'number'){
+			scale[0] *= s;
+			scale[1] *= s;
+			scale[2] *= s;
+		}
+		else{
+			scale[0] *= s[0];
+			scale[1] *= s[1];
+			scale[2] *= s[2];
+		}
 	}
 	
 	this.setPosition = function(p){
@@ -59,6 +70,19 @@ function Location(){
 		scale[0] = s[0];
 		scale[1] = s[1];
 		scale[2] = s[2];
+	}
+
+	this.getDistance = function(loc){
+		var distance = 0;
+
+		for(var i = 0; i < 3; i++){
+			if(position[i] > loc.getPosition()[i])
+				distance += position[i] - loc.getPosition()[i];
+			else
+				distance += loc.getPosition()[i] - position[i];
+		}
+
+			return distance;
 	}
 
 
