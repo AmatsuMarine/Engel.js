@@ -65,7 +65,7 @@ function Mesh(){
 					if(temp2 < 0 || temp + temp2 > 1){
 						//debug.log("invalid collision values");
 					}else{
-						var distance = -1* inverseDot * dotProduct(v2, cross2);
+						var distance = inverseDot * dotProduct(v2, cross2);
 
 						if(distance > 0){
 							if(out){

@@ -46,17 +46,25 @@ function Camera(){
 	// input [x,y]
 	// TODO: this is acting finicky - iron it out
 	this.getWorldRay = function(array){
-		var inverseCamera = mat4.inverse(this.getPerspectiveMatrix());
-		var inversePerspective = mat4.inverse(perspectiveMatrix);
-		var screen = [-1*array[0], -1*array[1], -1, 1];
+		var inverseCamera = mat4.inverse(location.getCameraRotationMatrix()); // view
+		var inversePerspective = mat4.inverse(perspectiveMatrix); // projection
+		var screen = [array[0], array[1], -1, 1];
 
-		var eye = multMatVec4(inverseCamera, screen);
-		eye[2] = 1;
+		var eye = [];
+		mat4.multiplyVec4(inversePerspective, screen, eye);
+//		var eye = multMatVec4(inversePerspective, screen);
+		eye[2] = -1;
 		eye[3] = 0;
 
-		var ray = multMatVec4(inversePerspective, eye);
+//		eye[1] *= -1;
+
+		var ray = [];
+		mat4.multiplyVec4(inverseCamera, eye, ray);
+//		ray = [ray[0], ray[1], ray[2]];
+//		vec3.normal(ray);
+//		var ray = multMatVec4(inverseCamera, eye);
 		
-		return eye;
+		return ray;
 	}
 
 	this.update = function(){

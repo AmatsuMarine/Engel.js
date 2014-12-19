@@ -12,9 +12,18 @@ RTS_Movement.prototype.moveAbility = function(){
 	var ability = new RTS_Ability();
 	ability.abilityName = "Move";
 	ability.description = "Move Command";
-	ability.effect = function(){
+	ability.effect = function(target){
 		var location = new Location();
-		location.translate([this.caster.location.getPosition()[0],0,-9]);
+
+//		debug.log(target.targettable.targetType);
+
+		// if RTS Unit
+		if(target.targettable.targetType[target.targettable.unit])
+			location = target.location;
+		else
+			location.translate([this.caster.location.getPosition()[0],0,-9]);
+
+debug.log(location.getPosition());
 
 		this.caster.movement.move(location);
 	};
@@ -37,6 +46,7 @@ RTS_Movement.prototype.update = function(){
 			this.speed = 0;
 	}
 	else{
+debug.log(this._targetLocation.getPosition());
 		this.speed += this._acceleration * engelEngine.deltaTime;
 
 		if(this.speed > this._maxSpeed)

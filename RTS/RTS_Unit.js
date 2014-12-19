@@ -9,6 +9,11 @@ function RTS_Unit(){
 	this.movement = new RTS_Movement(this);
 	this.weapon = new RTS_Weapon(this);
 	this.armor = new RTS_Armor(this);
+
+
+	this.targettable = new RTS_Targetting(this);
+	this.targettable.targetType[this.targettable.unit] = this.targettable.required;
+
 	this.abilityCard = new RTS_AbilityCard();
 	this.abilityCard.gameObject = this;
 
@@ -22,7 +27,9 @@ function RTS_Unit(){
 	this.mesh = new Mesh();
 	this.cost = 10;
 
-	this.trainUnits = [];
+	this.Layer = "Unit";
+
+//	this.trainUnits = [];
 
 //	this.abilityQueue = [];
 }

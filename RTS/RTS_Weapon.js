@@ -12,6 +12,8 @@ RTS_Weapon.prototype.attackAbility = function(){
 	var ability = new RTS_Ability();
 	ability.abilityName = "Attack";
 	ability.description = "Attack Command";
+	ability.targetting.targetType[ability.self] = ability.denied;
+
 	ability.effect = function(){
 		this.caster.weapon.attack(this.caster);
 	};

@@ -12,15 +12,25 @@ function Input(){
 		false
 	];
 
+	this.nextClick = [
+		false,
+		false,
+		false
+	];
+
 	// resets the mouse button inputs
 	var resetMouseButtons = function(){
 		Input.mouseButton[0] = input.nextMouseButton[0];
 		Input.mouseButton[1] = input.nextMouseButton[1];
 		Input.mouseButton[2] = input.nextMouseButton[2];
 
-//		input.nextMouseButton[0] = false;
-//		input.nextMouseButton[1] = false;
-//		input.nextMouseButton[2] = false;
+		Input.mouseClick[0] = input.nextClick[0];
+		Input.mouseClick[1] = input.nextClick[1];
+		Input.mouseClick[2] = input.nextClick[2];
+
+		input.nextClick[0] = false;
+		input.nextClick[1] = false;
+		input.nextClick[2] = false;
 	}
 
 
@@ -36,9 +46,7 @@ function Input(){
 		resetMouseButtons();
 
 // display mouse X/Y pos, left mouse button, and deltaTime
-		debug.primary("<b>X:</b> " + this.mousePosZoned[0] + " <b>Y:</b> " + this.mousePosZoned[1] + " <b>Click:</b> " + Input.mouseButton[0] + " " + this.nextMouseButton[0] + " <b>Delta time:</b> " + engelEngine.deltaTime);
-
-
+		debug.primary("<b>X:</b> " + this.mousePosZoned[0] + " <b>Y:</b> " + this.mousePosZoned[1] + " <b>Click:</b> " + Input.mouseButton[0] + " " + Input.mouseClick[0] + " <b>Delta time:</b> " + engelEngine.deltaTime);
 	}
 
 	var init = function(){
@@ -60,12 +68,27 @@ function Input(){
 			false,
 			false
 		];
+
+		this.nextClick = [
+			false,
+			false,
+			false
+		];
+
+		Input.mouseClick = [
+			false,
+			false,
+			false
+		];
 	}
 	// setup Input
 	init();
 
 	//var down = new Array(keys);
 }
+
+Input.mouseClick = [];
+Input.mouseButton = [];
 
 // store mouse position
 Input.handleMouseMove = function(event){
@@ -109,9 +132,40 @@ Input.handleMouseMove = function(event){
 
 // store mouse click
 Input.handleMouseDown = function(event){
-	input.nextMouseButton[0] = true;
+	var key = event.which;
+
+	if(key == 1){
+		input.nextMouseButton[0] = true;
+		input.nextClick[0] = true;
+	}
+	else if(key == 2){
+		input.nextMouseButton[1] = true;
+		input.nextClick[1] = true;
+//		debug.log("middle click");
+	}
+	else if(key == 3){
+		input.nextMouseButton[2] = true;
+		input.nextClick[2] = true;
+//		debug.log("right click");
+	}
 }
 
 Input.handleMouseRelease = function(event){
-	input.nextMouseButton[0] = false;
+	var key = event.which;
+	if(key == 1)
+		input.nextMouseButton[0] = false;
+	else if(key == 2){
+		input.nextMouseButton[1] = false;
+//		debug.log("middle up");
+	}
+	else if(key == 3){
+		input.nextMouseButton[2] = false;
+//		debug.log("right up");
+	}
+}
+
+Input.handleRightClick = function(event){
+//	input.nextMouseButton[1] = true;
+//	debug.log("Right click");
+	return false;
 }

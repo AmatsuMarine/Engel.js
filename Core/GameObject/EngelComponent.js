@@ -1,22 +1,22 @@
 function EngelComponent(){
 	this.gameObject;
+}
 
-	this.getLocation = function(){
-		return this.gameObject.getLocation();
-	}
+EngelComponent.prototype.getLocation = function(){
+	return this.gameObject.getLocation();
+}
 
-	this.onMouseOver = function(){
-		// do something
-	}
+EngelComponent.prototype.onMouseOver = function(){
+	// do something
+}
 
-	this.onMouseDown = function(){
-		// do something
-	}
+EngelComponent.prototype.onMouseDown = function(){
+	// do something
+}
 
-	this.addMethods = function(methods){
-		var object = this;
-		for(var name in methods){
-			object[name] = methods[name];
-		}
+EngelComponent.prototype.addMethods = function(methods){
+	var object = this;
+	for(var name in methods){
+		object[name] = methods[name];
 	}
 }

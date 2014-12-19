@@ -11,7 +11,8 @@ function RTS_Ability(){
 	this.startDelay = 0;
 	this.timeRemaining = this.startDelay;
 
-//	this.targetting = new RTS_Target();
+	this.targetting = new RTS_Targetting();
+	this.targettingSelection = true;
 
 	this.descPos = [0.5,-0.25,0.5,0.5];
 	this.position = [-1,1,0.5,0.5];
@@ -26,10 +27,12 @@ RTS_Ability.prototype.cast = function(target){
 	if(this.timeRemaining <= 0){
 		this.timeRemaining = this.cooldown;
 
-		// cast
-		try{
-			this.effect();
-		} catch(e) {}
+		if(this.targetting.canTarget(target)){
+			// cast
+			try{
+				this.effect(target);
+			} catch(e) {}
+		}
 	}
 }
 
@@ -41,6 +44,18 @@ RTS_Ability.prototype.onAttack = function(weapon, target){}
 
 // passive on defend
 RTS_Ability.prototype.onDefend = function(weapon, target){}
+
+RTS_Ability.prototype.onClick = function(){
+	player.RTS_TargetSelection = this.targettingSelection;
+
+	if(this.targettingSelection){
+		player.RTS_TargettingAbility = this;
+	}
+	else{
+//		this.cast();
+		debug.log("instant cast");
+	}
+}
 
 // details
 RTS_Ability.prototype.onMouseOver = function(){
@@ -55,8 +70,9 @@ RTS_Ability.prototype.draw = function(pos){
 	if(mouseInRect(this.position)){
 		this.onMouseOver();
 
-		if(Input.mouseButton[0])
-			this.cast();
+		if(Input.mouseClick[0]){
+			this.onClick();
+		}
 	}
 }
 

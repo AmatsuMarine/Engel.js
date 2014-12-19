@@ -178,6 +178,7 @@ function Engel(){
 		Engel.canvas.onmousedown = Input.handleMouseDown;
 		Engel.canvas.onmousemove = Input.handleMouseMove;
 		Engel.canvas.onmouseup = Input.handleMouseRelease;
+		Engel.canvas.oncontextmenu = Input.handleRightClick;
 
 		// initialize WebGL
 		try{
@@ -247,8 +248,5 @@ function runEngel(){
 // start Engel when page is ready
 $(window).ready(startEngel);
 
-// run Engel outside of object control for optimal updates
-//engelInterval = setInterval(runEngel, 1000 / 60);
-
 // don't open menu on right clicking on the canvas
-$('body').on('contextmenu', '#Engel-Canvas', function(e){ return false; });
+//$('body').on('contextmenu', '#Engel-Canvas', function(e){ return false; });

@@ -127,6 +127,15 @@ function Location(){
 		mat4.scale(matrix, scale);
 		return matrix;
 	}
+
+	this.getCameraRotationMatrix = function(){
+		var matrix = mat4.create();
+		mat4.identity(matrix);
+
+		mat4.rotate(matrix, Math.PI/180 * getLengthv3(rotation), getNegativev3(getNormalizedv3(rotation)));
+
+		return matrix;
+	}
 	
 	awake();
 }

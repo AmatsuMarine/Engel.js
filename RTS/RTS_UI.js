@@ -35,8 +35,26 @@ function RTS_UI(){
 
 			hoverObject.onMouseOver();
 
-			if(Input.mouseButton[0])
-				hoverObject.onMouseDown();
+// TODO: mouse click: targetting selection
+			if(Input.mouseClick[0]){
+
+				if(!player.RTS_TargetSelection){
+					hoverObject.onMouseDown();
+debug.log("not targetting");
+				}
+				else if(player.RTS_TargettingAbility !== null){
+debug.log("targetting");
+					if(player.RTS_TargettingAbility.targetting.canTarget(hoverObject)){
+						player.RTS_TargettingAbility.cast(hoverObject); // issue command
+
+						player.RTS_TargettingAbility = null;
+						player.RTS_TargetSelection = false;
+
+						debug.log("Command complete");
+					}else
+						debug.log("Cannot target");
+				}
+			}	
 		}
 	}
 
